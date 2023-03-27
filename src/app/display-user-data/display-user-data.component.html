@@ -1,0 +1,127 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <div class="navbar-brand" href="#">Employee Dashboard</div>
+    <div class="searchAndLogout">
+      <div class="d-flex" role="search">
+        <input class="form-control me-2" type="texxt" placeholder="Search" aria-label="Search" [(ngModel)]="filterTerm">
+      </div>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li>
+          <a (click)="logOut()" class="nav-link"><button class="btn btn-success">Logout</button> </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div style="width: 60%;margin: auto; border: 1px solid black;" class="table-responsive">
+
+  <!-- calling the add employee component -->
+  <app-add-user></app-add-user>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Employee ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Department</th>
+        <th scope="col">Contact Number</th>
+        <th scope="col">Delete</th>
+        <th scope="col">Update</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let user of retrievedUserData | filter: filterTerm | paginate:{
+          itemsPerPage:tableSize,
+          currentPage:page,
+          totalItems:count}; let i = index">
+
+        <td>{{user.id}}</td>
+        <td>{{user.name}}</td>
+        <td>{{user.department}}</td>
+        <td>{{user.contact}}</td>
+
+        <!-- for deletion -->
+        <td>
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal"
+            (click)="getEmployeeIdForDeletion(user.id)">Delete</button>
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Delete the record of the employee
+                  </h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                    (click)="deletingEmployeeUsingButtonAction(true)">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+
+        <!-- this is for updation -->
+        <td>
+          <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#updateModal"
+            (click)="getEmployeeIdForUpdation(user.id)">Update</button>
+          <!-- Modal -->
+          <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="updateModalLabel">Update the record of the employee {{user.name}}
+                  </h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form class="row g-3" #updationForm="ngForm">
+                    <div class="col-md-6">
+                      <label for="inputID" class="form-label">Enter the Employee ID</label>
+                      <input type="number" class="form-control" id="inputID" ngModel name="Id" required
+                        value=getEmployeeIdForDeletion()>
+                    </div>
+                    <div>
+                      <h5>Enter the details to update</h5>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputName" class="form-label">Enter the Name</label>
+                      <input type="text" class="form-control" id="inputName" ngModel name="Name" required>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="inputDepartment" class="form-label">Enter the Department</label>
+                      <input type="text" class="form-control" id="inputDepartment" ngModel name="department" required>
+                    </div>
+                    <div class="col-12">
+                      <label for="inputContact" class="form-label">Enter Contact number</label>
+                      <input type="number" class="form-control" id="inputContact" placeholder="Contact" ngModel
+                        name="contact" required>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-danger" data-bs-dismiss="modal"
+                        (click)="performUpdation(updationForm.value,true)">Update</button>
+                      <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Initiating the paginator from here -->
+  <div>
+    <pagination-controls previousLabel="prev" nextLabel="Next"
+      (pageChange)="onTableDataChange($event)"></pagination-controls>
+  </div>
+</div>

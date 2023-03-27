@@ -1,0 +1,60 @@
+<link rel="stylesheet" href="add-user.component.css">
+<!-- Button trigger modal -->
+<div class="addUserButton">
+
+  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    Add Employee
+  </button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Employee</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- From here the pop and the form starts -->
+      <div class="modal-body">
+        <form class="row g-3" #simpleForm="ngForm" (ngSubmit)="addEmployeeData(simpleForm.value)">
+
+          <div class="col-md-6">
+            <label for="inputID" class="form-label">Enter the ID</label>
+            <input type="number" class="form-control" id="inputID" ngModel name="Id" required>
+          </div>
+
+          <div class="col-md-6">
+            <label for="inputName" class="form-label">Enter the Name</label>
+            <input type="text" class="form-control" id="inputName" ngModel name="Name" required>
+          </div>
+
+          <div class="col-md-6">
+            <label for="inputDepartment" class="form-label">Enter the Department</label>
+            <input type="text" class="form-control" id="inputDepartment" ngModel name="department" required>
+          </div>
+
+          <div class="col-12">
+            <label for="inputContact" class="form-label">Enter Contact number</label>
+            <input type="number" class="form-control" id="inputContact" placeholder="Contact" ngModel name="contact"
+              required>
+          </div>
+          <div class="col-12">
+            <label for="inputPassword" class="form-label">Password(If password not set User name is password)</label>
+            <input type="password" class="form-control" id="inputPassword" placeholder="Enter password" ngModel
+              name="Password" required>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success" data-bs-dismiss="modal">Add</button>
+            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <app-display-data [retrievedData]="usersData"></app-display-data> -->
